@@ -1,0 +1,281 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <style>
+            body {
+                background: #FF9B44;
+            }
+            #Laranja {
+                width: 29%;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+         }
+        #versao {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        padding: 5px;
+        background-color: #333;
+        color: #fff;
+        font-size: 12px;
+      }
+        #LaranjaP {
+            text-align: center;
+            font-size: 85px;
+        }
+        #AutoClick {
+            position: absolute;
+                top: 70%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+        }
+        #precoACtxt {
+            position: absolute;
+            top: 75%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 43px;
+        }
+                @keyframes girar {
+            from {
+                transform: rotate(0deg) scale(0.1);
+            }
+            to {
+                transform: rotate(360deg) scale(0.1);
+            }
+        }
+        #moonOrb {
+            position: absolute;
+            top: 39%;
+            left: 0%;
+            display: none;
+            
+        }
+        #textHB {
+            position: absolute;
+            top: 100%;
+        }
+        #Habilidade1 {
+            position: absolute;
+            width: 10%;
+            top: 105%;
+        }
+        #textHBpreco {
+            position: absolute;
+            width: 10%;
+            top: 105%;
+            left: 15%;
+        }
+        #rain-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+      #Niveltxt {
+  width: 29%;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #eee;
+  box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00, 0 0 50px #00ff00;
+}
+     #BGChange {
+         position: absolute;
+         bottom: 0;
+     }
+     #laranjaDeOuro {
+         position: absolute;
+         top: 60%;
+         left: 10%;
+         display: none;
+         width: 10%;
+     }
+
+
+
+        </style>
+        <style src="mods/styleMod.css"></style>
+    </head>
+    <body>
+        <form>
+  <label for="resolucao">Resolução:</label>
+  <input type="number" id="resolucao" name="resolucao">
+  <button type="button" onclick="ajustarResolucao()">Ajustar Resolução</button>
+</form>
+
+<p id="Niveltxt">Level: <span id="level">0</span></p>
+<p>Next Level: <span id="oranges-needed">200</span></p>
+
+   <div id="rain-container">
+  <img src="assets/Effects/Rain.gif">
+</div>
+
+<img id="laranjaDeOuro" src="assets/Sprites/laranjaDeOuro.png">
+   
+  <button id="BGChange">Background</button>
+
+        <div id="precoACtxt">
+  <p>200 $</p>
+</div>
+
+<div id="LaranjaP">
+  <p><span id="LaranjaP">0</span></p>
+</div>
+
+<img onclick="ponto()" id="Laranja" src="assets/Sprites/Laranja.png">
+
+<img onclick="upgradeH1()" id="Habilidade1" src="assets/Sprites/Habilidade1_icon.png">
+
+<div id="versao">
+  <p>Version 1.0.3</p>
+</div>
+
+<div id="textHB">
+    <p>Skiils:</p>
+</div>
+  <p><span id="textHBpreco">1000</span></p>
+
+<button onclick="comprarAC()" id="Autoclick">AutoClick</button>
+<button onclick="comprarMoon()" id="OrbBuy1">$ 500</button>
+<button onclick="comprarChuva()" id="ChuvaBuy1">$ 1.100</button>
+<button onclick="comprarLO()" id="LaranjaDOComprar">$ 5.000</button>
+
+<div id="moonOrb">
+  <img src="assets/Sprites/moonOrb.png">
+</div>
+
+        <script>
+        var click = 1;
+        var laranja = 0;
+            var precoAC = 200;
+            var precoMoon = 500;
+            var UpH1 = 1000;
+            var precoChuva = 1100;
+            var Level = 0;
+            var laranjaNes = 200;
+            var precoLO = 5000;
+            
+           
+const laranjaElement = document.getElementById("LaranjaP");
+
+setInterval(() => {
+  laranjaElement.innerHTML = laranja;
+}, 1);
+
+document.getElementById("BGChange").addEventListener("click", function(){
+  var randomColor = Math.floor(Math.random()*16777215).toString(16);
+  document.body.style.backgroundColor = "#" + randomColor;
+});
+
+
+function updateUI() {
+    document.getElementById("level").innerHTML = Level;
+    document.getElementById("oranges-needed").innerHTML = laranjaNes;
+}
+
+function comprarChuva() {
+  const precoChuva = 1100;
+
+  if (laranja >= precoChuva) {
+    laranja -= precoChuva;
+
+    // adiciona chuva de laranjas
+    const container = document.getElementById("rain-container");
+    container.style.display = "flex";
+
+
+    // começa a ganhar laranjas
+    setInterval(function() {
+      laranja += 5;
+    }, 1000);
+}
+}
+
+            
+            function ponto() {
+                laranja =laranja+click
+                localStorage.setItem('pontos', laranja);
+                console.log(laranja);
+                if (laranja >= laranjaNes) {
+
+        laranjaNes = Math.floor(laranjaNes * 1.75);
+        Level++;
+        updateUI();
+    }
+            }
+            function comprarMoon() {
+                const moonOrb = document.getElementById("moonOrb");
+                if (laranja >= 600) {
+                    laranja -= 600;
+                moonOrb.style.display = "block";
+                moonOrb.style.animation = "girar 2s infinite";
+                
+                setInterval(function() {
+                    laranja += 3;
+                    console.log("Laranjas: " + laranja);
+                }, 1000);
+            }
+            }
+            function comprarLO() {
+                const laranjaDOuro = document.getElementById("laranjaDeOuro");
+               if (laranja >= 5000) {
+                   laranja -= 5000;
+                   laranjaDOuro.style.display = "block";
+                   
+                   setInterval(function() {
+                       laranja += 10;
+                       
+                   }, 1000);
+               }
+               
+            }
+            function comprarAC() {
+    const AutoClick = document.getElementById("Autoclick");
+    const precoACtxt = document.getElementById("precoACtxt");
+    if(laranja >= precoAC) {
+        laranja -= precoAC; //subtrai o preço da compra do total de laranjas
+        precoAC *= 2; //dobra o preço do AutoClick para a próxima compra
+        AutoClick.style.display = "none";
+        precoACtxt.style.display = "none";
+  
+        setInterval(aumentarLaranjas, 1000); //chama a função "aumentarLaranjas" a cada 1 segundo
+    } 
+}
+
+function aumentarLaranjas() {
+    laranja++; //incrementa a variável "laranja" a cada segundo
+    localStorage.setItem('pontos', laranja);
+    console.log("Laranjas: " + laranja);
+}
+
+function EB() {
+    alert("Função não terminada")
+}
+
+function upgradeH1() {
+  if (laranja >= UpH1) {
+    click++;
+    laranja -= UpH1; // Subtrai o valor de UpH1 de laranja
+    UpH1 = Math.round(UpH1 * 1.5); // Aumenta UpH1 em 1,5 vezes
+    document.getElementById("textHBpreco").innerHTML = UpH1; // Atualiza o conteúdo do elemento HTML
+  }
+}
+
+function ajustarResolucao() {
+  const resolucao = document.getElementById("resolucao").value;
+  if (resolucao && !isNaN(resolucao)) { // Verifica se o valor é válido
+    window.resizeTo(resolucao, resolucao);
+  }
+}
+        </script>
+    </body>
+</html>
